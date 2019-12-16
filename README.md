@@ -48,6 +48,30 @@ an instance of Grafana.
 You can run this on a raspberry Pi on your home network or on the many clouds
 that offer this as a service.
 
+## Development
+
+
+### Setup
+
+```
+yarn # install dependencies
+```
+
+### Test
+
+```
+yarn test
+```
+
+Runs mocha tests.
+
+### Run locally
+
+```
+yarn serve
+```
+
+Will run a development server on port 9000 where you see the code being.
 
 ## Possible Additions
 

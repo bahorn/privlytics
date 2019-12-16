@@ -1,3 +1,5 @@
+import UAParser from 'ua-parser-js'
+
 /* Enum describing return values for this function */
 const PrivlyticsEnum = {
   'SUCCESS': 0,
@@ -6,7 +8,6 @@ const PrivlyticsEnum = {
   'MISSING_SITE_ID': 3
 }
 Object.freeze(PrivlyticsEnum)
-
 
 /* Random function. Split so I can develop tests */
 const randomSample = () => {
@@ -139,3 +140,5 @@ const privlytics = (site_id, endpoint, sample_size=0.1) => {
 
   return PrivlyticsEnum.SUCCESS
 }
+
+export default privlytics

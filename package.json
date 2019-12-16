@@ -1,0 +1,22 @@
+{
+  "name": "privlytics",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:bahorn/privlytics.git",
+  "author": "bahorn <b@horn.uk>",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^6.2.2"
+  },
+  "scripts": {
+    "test": "mocha --recursive",
+    "build": "webpack",
+    "serve": "webpack-dev-server"
+  },
+  "dependencies": {
+    "ua-parser-js": "^0.7.20",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  }
+}
