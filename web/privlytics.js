@@ -1,3 +1,18 @@
+/* Enum describing return values for this function */
+const PrivlyticsEnum = {
+  'SUCCESS': 0,
+  'DNT_ENABLED': 1,
+  'NOT_SAMPLED': 2,
+  'MISSING_SITE_ID': 3
+}
+Object.freeze(PrivlyticsEnum)
+
+
+/* Random function. Split so I can develop tests */
+const randomSample = () => {
+  return Math.random()
+}
+
 /* Check if DNT is enabled, using the trick described here:
  * https://dev.to/corbindavenport/how-to-correctly-check-for-do-not-track-with-javascript-135d
  * as browsers don't have a uniform way of detecting it. */
@@ -20,7 +35,7 @@ const isDNTEnabled = () => {
  * */
 const uuidv4 = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    var r = randomSample() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
 }
@@ -85,7 +100,6 @@ const provide = (state, f, args) => {
   }
 }
 
-
 /* Hook events like onunload so we can get page view time */
 const addHandlers = (state) => {
   window.addEventListener('unload',
@@ -97,16 +111,16 @@ const privlytics = (site_id, endpoint, sample_size=0.1) => {
   /* Require site_id to be set so you can filter your logs properly. */
   if (!site_id) {
     console.error('[privlytics] missing required parameter siteId')
-    return
+    return PrivlyticsEnum.MISSING_SITE_ID
   }
 
   /* We only run when the user hasn't enabled DNT */
   if (isDNTEnabled()) {
-    return
+    return PrivlyticsEnum.DNT_ENABLED
   }
   /* We can now continue to check if the request is going to be sampled. */
-  if (Math.random() > sample_size) {
-    return
+  if (randomSample() > sample_size) {
+    return PrivlyticsEnum.NOT_SAMPLED
   }
 
   /* We pass this down our tree of events. All these values are static and
@@ -122,4 +136,6 @@ const privlytics = (site_id, endpoint, sample_size=0.1) => {
 
   /* Initial Stats */
   provide(state, getStats)()
+
+  return PrivlyticsEnum.SUCCESS
 }
