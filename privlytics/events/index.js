@@ -5,12 +5,15 @@ import unloadEvent from './unload'
 
 /* Hook events like onunload so we can get page view time */
 const setupEvents = (state) => {
-  window.addEventListener('load',
+  /* window.addEventListener('load',
     provide(state, loadEvent.handler, {})
-  )
+  ) */
   window.addEventListener('unload',
     provide(state, unloadEvent.handler, unloadEvent.setup())
   )
+  //window.addEventListener('beforeunload',
+  //  provide(state, unloadEvent.handler, unloadEvent.setup())
+  // )
 }
 
 export {

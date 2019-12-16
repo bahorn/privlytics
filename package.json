@@ -6,7 +6,8 @@
   "author": "bahorn <b@horn.uk>",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^6.2.2"
+    "mocha": "^6.2.2",
+    "netlify-cli": "^2.25.0"
   },
   "scripts": {
     "test": "mocha --recursive",
@@ -14,6 +15,7 @@
     "serve": "webpack-dev-server"
   },
   "dependencies": {
+    "faunadb": "^2.10.0",
     "ua-parser-js": "^0.7.20",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",

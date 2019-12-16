@@ -16,7 +16,7 @@ const isDNTEnabled = () => {
 /* Pass JSON via a POST request */
 const sendJSON = (endpoint, json) => {
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', endpoint, true);
+  xhr.open('POST', endpoint, false);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify(json));
 }

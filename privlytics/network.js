@@ -2,6 +2,7 @@ import { sendJSON } from './browser'
 
 /* Send statistics to the remote endpoint */
 const provideToCollector = (endpoint, stats) => {
+  console.log(endpoint, stats);
   if (endpoint) {
     sendJSON(endpoint, stats)
   } else {
