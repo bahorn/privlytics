@@ -1,53 +1,8 @@
 import UAParser from 'ua-parser-js'
 
-/* Enum describing return values for this function */
-const PrivlyticsEnum = {
-  'SUCCESS': 0,
-  'DNT_ENABLED': 1,
-  'NOT_SAMPLED': 2,
-  'MISSING_SITE_ID': 3
-}
-Object.freeze(PrivlyticsEnum)
-
-/* Random function. Split so I can develop tests */
-const randomSample = () => {
-  return Math.random()
-}
-
-/* Check if DNT is enabled, using the trick described here:
- * https://dev.to/corbindavenport/how-to-correctly-check-for-do-not-track-with-javascript-135d
- * as browsers don't have a uniform way of detecting it. */
-
-const isDNTEnabled = () => {
-  if (window.doNotTrack || navigator.doNotTrack || navigator.msDoNotTrack || 'msTrackingProtectionEnabled' in window.external) {
-    if (window.doNotTrack == "1" || navigator.doNotTrack == "yes" || navigator.doNotTrack == "1" || navigator.msDoNotTrack == "1" || window.external.msTrackingProtectionEnabled()) {
-      return true
-    } else {
-      return false
-    }
-  } else {
-    return false
-  }
-}
-
-/* Quickly generate a UUID. This isn't cryptographically secure, but that 
- * isn't relevant for this use case.
- * This comes from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
- * */
-const uuidv4 = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = randomSample() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
-
-/* Pass JSON via a POST request */
-const sendJSON = (endpoint, json) => {
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', endpoint, true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(JSON.stringify(json));
-}
+import { PrivlyticsEnum } from './constants'
+import { isDNTEnabled, sendJSON } from './browser'
+import { randomSample, uuidv4 } from './utils'
 
 /* Get what we care about from the users browsers during the initial load */
 const getStats = () => {
