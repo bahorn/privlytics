@@ -5,8 +5,8 @@ Basic web analytics, built to run within free tiers of various cloud providers.
 Meant as a privacy preserving free alternative to the existing analytics 
 services.
 
-Originally designed as a solution for [removing GA on our Hackathons site](https://github.com/CovHack/CovHack2020/pull/24)
-, where we only needed basic information to track how well our marketing was
+Originally designed as a solution for [removing GA on our Hackathons site](https://github.com/CovHack/CovHack2020/pull/24),
+where we only needed basic information to track how well our marketing was
 going and have an idea of page views.
 
 ## Components
@@ -16,6 +16,7 @@ going and have an idea of page views.
 Currently, this collects:
 * the host name portion of the referer
 * browser via [faisalman/ua-parser-js](https://github.com/faisalman/ua-parser-js)
+* Time spent on page
 
 To preserve runtime on the FaaS provider, we only call the function on
 approximately 10% of page loads (configurable in the constructor). You just need
