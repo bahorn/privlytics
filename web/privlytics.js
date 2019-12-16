@@ -25,6 +25,14 @@ const uuidv4 = () => {
   });
 }
 
+/* Pass JSON via a POST request */
+const sendJSON = (endpoint, json) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', endpoint, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify(json));
+}
+
 /* Get what we care about from the users browsers during the initial load */
 const getStats = () => {
   const { browser } = new UAParser().getResult()
@@ -48,23 +56,20 @@ const leaveEvent = (args) => {
 /* Send statistics to the remote endpoint */
 const provideToCollector = (endpoint, stats) => {
   if (endpoint) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', endpoint, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(stats));
+    sendJSON(endpoint, stats)
   } else {
     /* For local development. */  
     console.log(stats)
   }
-
 }
 
 /* Adds this sessions UUID to the dict, so we can link stats to values
  * fired on other events. */
-const wrapUUID = (uuid, f) => {
+const wrapRequired = (uuid, site_id, f) => {
   return (args) => {
     const res = f(args)
     res['uuid'] = uuid
+    res['site_id'] = site_id
     return res
   }
 }
@@ -73,10 +78,10 @@ const wrapUUID = (uuid, f) => {
  * Use args to pass down values that need to be generated at the start.
  */
 const provide = (state, f, args) => {
-  const { endpoint, uuid } = state;
+  const { endpoint, uuid, site_id } = state;
   return (e) => {
     /* We can implement checks on the event here if we care. */
-    provideToCollector(endpoint, wrapUUID(uuid, f)(args))
+    provideToCollector(endpoint, wrapRequired(uuid, site_id, f)(args))
   }
 }
 
@@ -88,7 +93,13 @@ const addHandlers = (state) => {
   )
 }
 
-const privlytics = (endpoint, sample_size=0.1) => {
+const privlytics = (site_id, endpoint, sample_size=0.1) => {
+  /* Require site_id to be set so you can filter your logs properly. */
+  if (!site_id) {
+    console.error('[privlytics] missing required parameter siteId')
+    return
+  }
+
   /* We only run when the user hasn't enabled DNT */
   if (isDNTEnabled()) {
     return
@@ -102,7 +113,8 @@ const privlytics = (endpoint, sample_size=0.1) => {
    * defined here */
   const state = {
     'uuid': uuidv4(),
-    'endpoint': endpoint
+    'endpoint': endpoint,
+    'site_id': site_id
   }
 
   /* Setup our event handlers */
