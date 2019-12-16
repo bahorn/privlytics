@@ -1,4 +1,3 @@
 import privlytics from '../privlytics'
 
-privlytics('a')
-console.log('RUNNING');
+privlytics('DEV_SITE', null, 1.0)
