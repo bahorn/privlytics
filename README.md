@@ -68,10 +68,14 @@ Runs mocha tests.
 ### Run locally
 
 ```
-yarn serve
+yarn serve & 
+netlify dev
 ```
 
 Will run a development server on port 9000 where you see the code being.
+
+netlify dev hosts the functions and the webpack dev server builds the plain
+example site.
 
 ## Possible Additions
 
